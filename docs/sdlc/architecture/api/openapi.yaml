@@ -2,6 +2,94 @@
 openapi: 3.1.0
 info:
   title: airports
-  version: architecture-v0
+  version: architecture-v1
   description: Designed API from the approved architecture (not extracted from code).
-paths: {}
+paths:
+  /airports/search:
+    get:
+      summary: Search airports by ICAO code, IATA code, name, city, or country via
+        Meilisearch; returns matching airports or an empty l
+      description: Search airports by ICAO code, IATA code, name, city, or country
+        via Meilisearch; returns matching airports or an empty list on no match.
+      operationId: get_airports_search
+      parameters: []
+      responses:
+        '200':
+          description: '200 {"results": [{id, icao_code, iata_code, name, municipality,
+            country_name, latitude_deg, longitude_deg}], "count": n} - empty results
+            array when nothing matches'
+  /airports/{code}:
+    get:
+      summary: Look up a single airport by a valid ICAO or IATA code and return full
+        details, or 404 if the code is not in the dataset.
+      description: Look up a single airport by a valid ICAO or IATA code and return
+        full details, or 404 if the code is not in the dataset.
+      operationId: get_airports_code
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 {id, icao_code, iata_code (empty when absent), name, municipality,
+            country_name, latitude_deg, longitude_deg} | 404 {detail}
+  /health:
+    get:
+      summary: Liveness/readiness check for the service and its dependencies.
+      description: Liveness/readiness check for the service and its dependencies.
+      operationId: get_health
+      parameters: []
+      responses:
+        '200':
+          description: '200 {"status": "ok"}'
+  /routes/distance:
+    get:
+      summary: 'Compute the great-circle (haversine) distance between two airports
+        selected by code; returns distance in kilometres and '
+      description: Compute the great-circle (haversine) distance between two airports
+        selected by code; returns distance in kilometres and nautical miles. Same
+        origin and destination returns zero.
+      operationId: get_routes_distance
+      parameters: []
+      responses:
+        '200':
+          description: '200 {"from": {code, lat, lon}, "to": {code, lat, lon}, "distance_km":
+            number, "distance_nm": number} | 404 {detail} when a code is unknown'
+components:
+  schemas:
+    airports:
+      type: object
+      properties:
+        id:
+          type: integer
+        ident:
+          type: string
+        icao_code:
+          type: string
+        iata_code:
+          type: string
+        name:
+          type: string
+        municipality:
+          type: string
+        iso_country:
+          type: string
+        country_name:
+          type: string
+        airport_type:
+          type: string
+        latitude_deg:
+          type: number
+        longitude_deg:
+          type: number
+        imported_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - latitude_deg
+      - longitude_deg
+      - imported_at
