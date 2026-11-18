@@ -6,11 +6,13 @@ import { expect, test } from "@playwright/test";
 // journey, and the browser is left holding no per-visitor identity
 // afterwards (no cookie, no session/token/user key in storage).
 
-// Words that would mark an actual gate in front of a feature. The app's own
-// "free to use, no account" reassurance text does not use these words, so
-// this pattern does not need an allowlist carve-out.
+// Words that would mark an actual gate in front of a feature -- not the
+// app's own "Free to use — no sign-up, no billing." reassurance text, which
+// legitimately uses "sign-up" and "billing" to state the app is free, not to
+// gate a feature behind them. This mirrors the carve-out in the sibling
+// free-to-use.spec.ts's PAYWALL_WORDING pattern.
 const GATE_WORDING =
-  /sign up|sign in|log in|subscribe|pricing|payment|billing|upgrade|free trial|card number/i;
+  /sign up to continue|sign in to continue|log in to continue|subscribe now|pricing plan|enter your card|payment required|payment method|upgrade to (continue|unlock|pro)|start your free trial|card number/i;
 
 // Keys that would reveal a per-visitor session, token or user identity
 // stored in the browser (NFR-004: nothing stored per user).
