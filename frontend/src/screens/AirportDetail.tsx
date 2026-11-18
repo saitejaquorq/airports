@@ -1,5 +1,5 @@
 // @ts-nocheck -- generated from the approved design under its JS runtime contract; not hand-written TypeScript.
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React from "react";
 
 import * as UI from "@/lib/ui";
@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Button, Badge, Table, THead, TBody, TR, TH, TD } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Check, ArrowLeft } = Icons;
 
 const AIRPORT = {

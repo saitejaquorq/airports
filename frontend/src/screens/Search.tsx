@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Label, Select } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Search } = Icons;
 
 const PRODUCT = "airports";

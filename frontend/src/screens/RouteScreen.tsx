@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Button, Input, Label, Badge, TR, TH } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Search, X, Clock, ArrowLeft, ArrowRight, AlertCircle, CheckCircle } = Icons;
 
 const AIRPORTS = [
