@@ -15,7 +15,9 @@ Redeploy the last good version from the platform's Deployment tab, or revert the
 <!-- sdlc:auto:end rollback -->
 
 <!-- sdlc:auto:start recent-failures -->
-_No failed deployments recorded._
+| Date | Version | Summary |
+|---|---|---|
+| 2026-11-18 | c263d74164d2 | The container could not be started: `docker exec ai-sdlc-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile` failed (1): Error response from daemon: No such container: ai-sdlc-caddy-1 |
 <!-- sdlc:auto:end recent-failures -->
 
 ## Contacts and escalation

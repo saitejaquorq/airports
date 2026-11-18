@@ -5,125 +5,162 @@
 <!-- sdlc:auto:start narrative -->
 ## Summary
 
-### REQ-STACK · approved · source: requirements:technology-stack
+### REQ-STACK · approved · source: requirements:stack
 
-Product owner approved a fixed, lightweight technology stack sized to a read-only reference tool with no accounts.
+Product owner approved an exact technology stack: FastAPI 0.115 backend, AWS cloud, PostgreSQL 16 database, React 19 frontend.
 
-Backend: FastAPI 0.115 - lean Python service to serve search/lookup and compute great-circle distance, and to import/refresh the OurAirports dataset on a schedule; no accounts/payments/writes to manage. Cloud: AWS - hosts the web app, FastAPI service, and database; scales down cheaply for unpredictable, low-revenue public traffic. Database: PostgreSQL 16 - stores ~80,000 read-only airport records (codes, names, cities, countries, coordinates), supports clean re-import and location/lookup queries without extra moving parts. Frontend: React 19 - drives the single interactive screen (search box, results list, map) and pairs with Leaflet to render the great-circle line on an OpenStreetMap-style map; works on desktop and mobile browsers.
+- Backend: FastAPI 0.115 - the server's job is small (serve search/lookup results, compute great-circle distance); Python is also the natural place to import/refresh the OurAirports dataset; no accounts, payments, or writes to manage.
+- Cloud: AWS - covers hosting the web app, the FastAPI service, and the database; scales down cheaply under unpredictable, low/no-revenue traffic.
+- Database: PostgreSQL 16 - comfortably stores ~80,000 read-only airport rows (codes, names, cities, countries, coordinates), supports clean re-import, and answers lookup/location queries without extra moving parts.
+- Frontend: React 19 - drives the single interactive screen (search box, results list, route map); pairs with Leaflet to render the great-circle line on OpenStreetMap-style tiles; works the same on desktop and mobile browsers.
 
 ### REQ-SERVICES · approved · source: requirements:services
 
-Two external services approved for runtime: a search engine and a map tile provider, with one required API key.
+Two external/runtime services were approved: Meilisearch for search and MapTiler for map tiles, requiring an API key.
 
-Search: Meilisearch (container getmeili/meilisearch:v1.10.3) - provides fast, typo-tolerant, type-as-you-go search across ICAO code, IATA code, name, city, and country, which plain DB queries would struggle to match. Map tiles: MapTiler (custom, env MAPTILER_API_KEY) - supplies production-grade map background imagery for the route map, since OSM's own public tiles are not meant for production traffic; has a free tier suited to a low-cost public tool. Required API key: MAPTILER_API_KEY.
+- Search: Meilisearch (container getmeili/meilisearch:v1.10.3) - provides fast, typo-tolerant, type-as-you-go search across ICAO code, IATA code, name, city, and country, which plain database queries would struggle to match.
+- Map tiles: MapTiler (custom, env MAPTILER_API_KEY) - supplies background map imagery for the route line since OpenStreetMap's own public tiles are not meant for production traffic; MapTiler has a free tier suited to a low-cost public tool.
+- Required API key: MAPTILER_API_KEY.
 
 ### REQ-SCOPE · approved · source: requirements:scope
 
-Scope covers worldwide airport search, detail view, great-circle route plotting with distance, public API, and documentation; explicitly excludes real airway routing and user accounts.
+Scope is a lightweight, free, single-screen airport search and great-circle route tool; real airways routing and user accounts are explicitly excluded.
 
-In scope: airport search by ICAO/IATA/name/city/country; airport detail view (codes, name, city, country, coordinates); origin/destination selection for a route; great-circle route drawn on an interactive map; route distance in nautical miles and kilometres; worldwide airport directory loaded from a bundled read-only open dataset; public search and lookup endpoints; getting-started documentation; OurAirports as data source; MapTiler tiles; haversine distance calculation; free to use with no payments/billing. Out of scope - do not design or build: real airways/waypoint routing (flight-planner-grade routing through published airways); user accounts, saved favourites, and saved routes.
+In scope: airport search by ICAO code, IATA code, name, city, and country; airport detail view (codes, name, city, country, coordinates); origin/destination selection for a route; great-circle route drawn on an interactive map; route distance in nautical miles and kilometres; worldwide airport directory loaded from a bundled open dataset (read-only); public search and airport-lookup endpoints; getting-started documentation; OurAirports public open dataset as the airport source; MapTiler map tiles; great-circle (haversine) distance calculation; free to use, no payments or billing.
+Out of scope: real airways/waypoint routing (flight-planner-grade routing through published airways); user accounts, saved favourites, and saved routes.
 
 ### REQ-FEAT-USING-APP · approved · source: requirements:feature:Using the app
 
-The app is delivered as a single responsive screen, free for anyone to use with no sign-up.
+The product is one responsive screen, free to use with no sign-up at any point.
 
-Single-screen responsive app: one interactive web screen with a search box, results list, and route map; layout adapts so search, airport details, and the route map stay usable on desktop and mobile browsers. Free public access, no sign-up: every feature usable without an account, sign-up, subscription, payment, or billing at any point; nothing is saved per user.
+- Single-screen responsive app: one interactive web screen (search box, results list, route map) that adapts so search, airport details, and the route map stay usable on desktop and mobile browsers.
+- Free public access, no sign-up: every feature usable without an account, sign-up, subscription, payment, or billing; nothing is saved per user.
 
 ### REQ-FEAT-SEARCH · approved · source: requirements:feature:Searching airports
 
-Users can search the worldwide directory by multiple fields and review identifying details in results.
+Users can search the worldwide directory by code, name, city, or country, and review identifying details in each result.
 
-Search airports by code, name, city or country: search the worldwide directory by ICAO code, IATA code, airport name, city, or country and get a list of matches; when nothing matches, an empty-results message is shown and no entries are listed. Review and select a result: each result shows at least airport name, ICAO code, IATA code (where available), city, and country; from a result the user can open the detail view or set the airport as an origin or destination for a route.
+- Search by code, name, city, or country: returns a list of matching airports by ICAO code, IATA code, name, city, or country; if nothing matches, an empty-results message is shown and no entries are listed.
+- Review and select a result: each result shows at least name, ICAO code, IATA code (where available), city, and country; from a result the user can open the detail view or set it as a route origin or destination.
+
+**Related:** REQ-SERVICES
 
 ### REQ-FEAT-DETAILS · approved · source: requirements:feature:Airport details
 
-A read-only detail view shows full identifying and location information for a selected airport.
+A read-only detail view shows an airport's full identifying and location information.
 
-View airport details: shows name, ICAO code, IATA code, city, country, and latitude/longitude coordinates for a selected airport. When an airport has no IATA code the field is shown as empty/not available rather than an incorrect value; no controls to edit, add, or delete airport data are offered.
+- View airport details: name, ICAO code, IATA code, city, country, latitude/longitude. Missing IATA code is shown as empty/not available rather than an incorrect value. No controls to edit, add, or delete airport data are offered.
 
 ### REQ-FEAT-ROUTE · approved · source: requirements:feature:Plotting a route
 
-Users select an origin and destination, see a great-circle route drawn on an interactive map, and view the distance in two units.
+Users pick an origin and destination airport and see a great-circle route plotted with distance in NM and km.
 
-Select origin and destination: search for and select one airport as origin and a different one as destination. Change or clear a selection: clear or replace either airport and re-plot the route. Draw the great-circle route on a map: once both are set, a great-circle line connects them with both airports marked; map stays interactive on pan/zoom with correct positioning; base map renders with appropriate attribution for tile and data providers. Show route distance: great-circle (haversine) distance shown in both nautical miles and kilometres; if origin and destination are the same airport, distance shows as zero with a point or no line rather than an error.
+- Select origin and destination: user searches for and selects one airport as origin and a different one as destination.
+- Change or clear a selection: either airport can be cleared or replaced and the route re-plotted.
+- Draw the great-circle route on a map: a great-circle line connects the two airports, both marked; map stays interactive on pan/zoom with correctly positioned line/markers; base map renders with appropriate tile/data provider attribution.
+- Show route distance: great-circle (haversine) distance shown in nautical miles and kilometres; same origin/destination yields zero distance with a point or no line rather than an error.
+
+**Related:** REQ-FEAT-DETAILS
 
 ### REQ-FEAT-DIRECTORY · approved · source: requirements:feature:Airport directory data
 
-The app is populated worldwide from the bundled OurAirports dataset, which is read-only and refreshed only by re-import.
+The directory is a worldwide, read-only dataset refreshed only by operator re-import.
 
-Worldwide airport directory from an open dataset: populated with worldwide airports from the bundled OurAirports open dataset, each with ICAO code, IATA code where present, name, city, country, and coordinates. Read-only directory refreshed by re-import: data cannot be changed through the app; an operator refreshes it by re-importing an updated dataset, and the directory then reflects the re-imported data without manual in-app editing.
+- Worldwide airport directory from an open dataset: populated from the bundled OurAirports dataset, each airport with ICAO code, IATA code where present, name, city, country, coordinates.
+- Read-only directory refreshed by re-import: data cannot be changed through the app; an operator refreshes it by re-importing an updated dataset, with no manual in-app editing.
 
 ### REQ-FEAT-API · approved · source: requirements:feature:Public API
 
-Two public, credential-free endpoints support searching airports and looking up a single airport by code.
+Two public, no-authentication endpoints expose airport search and single-airport lookup.
 
-Public airport search endpoint: no-authentication endpoint searches by ICAO, IATA, name, city, or country and returns matching airports with ICAO code, IATA code, name, city, country, and coordinates; a query matching nothing returns an empty result set with a success response; requests succeed without credentials. Public airport lookup endpoint: no-authentication endpoint looks up a single airport by valid ICAO or IATA code and returns full details; a nonexistent code returns a not-found response.
+- Public airport search endpoint: searches by ICAO code, IATA code, name, city, or country, returning matches with ICAO code, IATA code, name, city, country, coordinates; no-match returns an empty result set with a success response; no credentials required.
+- Public airport lookup endpoint: looks up a single airport by a valid ICAO or IATA code and returns full details; a code not in the dataset returns a not-found response.
+
+**Related:** REQ-SERVICES
 
 ### REQ-FEAT-DOCS · approved · source: requirements:feature:Help & documentation
 
-Getting-started documentation explains how to use the app and how to configure the dataset and map tiles.
+Getting-started documentation explains how to use the app and how to set up data and map tiles.
 
-Published documentation explains how to search airports, view airport details, and plot a great-circle route with distance. The setup section explains that airport data comes from the bundled OurAirports dataset and how to configure MapTiler map tiles, using placeholders such as <your-maptiler-api-key> rather than a real key.
+- Getting-started documentation: explains how to search airports, view airport details, and plot a great-circle route with distance. Setup section explains airport data comes from the bundled OurAirports dataset and how to configure MapTiler map tiles, using placeholders such as <your-maptiler-api-key> rather than a real key.
 
 ### NFR-001 · approved · source: requirements:NFR-001
 
-Performance: search must return results instantly as the user types, with typo tolerance.
+Search must return typo-tolerant results instantly as the user types.
 
-Airport search returns matching results quickly as the user types, with typo tolerance, across ICAO code, IATA code, name, city, and country, so people can find the right airport instantly.
+Performance: airport search returns matching results quickly as the user types, with typo tolerance, across ICAO code, IATA code, name, city, and country.
+
+**Related:** REQ-FEAT-SEARCH
 
 ### NFR-002 · approved · source: requirements:NFR-002
 
-Scalability: the app must serve the full ~80,000-airport directory and stay responsive under unpredictable public traffic while scaling down cheaply.
+The app must serve the full ~80,000-airport directory and stay responsive under unpredictable public traffic while scaling down cheaply when quiet.
 
-The app serves search and lookups over the full worldwide directory of roughly eighty thousand airports and stays responsive under unpredictable public visitor numbers, while scaling down cheaply when traffic is low. Target: roughly 80,000 airports in the directory.
+Scalability. Target: roughly 80,000 airports in the directory.
+
+**Related:** REQ-FEAT-DIRECTORY
 
 ### NFR-003 · approved · source: requirements:NFR-003
 
-Availability: the free public tool must remain available and usable without manual intervention.
+As a free public reference tool, the app must stay available and usable under unpredictable visitor numbers without manual intervention.
 
-As a free public reference tool, the app remains available and usable under unpredictable visitor numbers without requiring manual intervention.
+Availability requirement; no manual intervention needed to stay up.
 
 ### NFR-004 · approved · source: requirements:NFR-004
 
-Privacy: no accounts exist and nothing is stored per user.
+No accounts exist and nothing is collected or saved per user.
 
-The app has no user accounts and does not collect or save anything per user; searches, airport views, and routes are not tied to an individual or retained.
+Privacy: searches, airport views, and routes are not tied to an individual or retained.
+
+**Related:** REQ-FEAT-USING-APP
 
 ### NFR-005 · approved · source: requirements:NFR-005
 
-Compatibility: the responsive app must work in current desktop and mobile browsers with no native app required.
+The responsive web app must work in current desktop and mobile browsers with no native app required.
 
-The responsive web app works in current desktop and mobile browsers, keeping search, airport details, and the route map usable with a layout appropriate to the screen size, with no native app required.
+Compatibility: search, airport details, and the route map stay usable with a layout appropriate to screen size.
+
+**Related:** REQ-FEAT-USING-APP
 
 ### NFR-006 · approved · source: requirements:NFR-006
 
-Compliance: the map must display attribution for MapTiler tiles and underlying map data providers.
+The interactive map must display appropriate attribution for MapTiler tiles and underlying map data providers on load.
 
-When the interactive map loads, it displays appropriate attribution for the MapTiler map tiles and the underlying map data providers.
+Compliance with map/data provider attribution terms.
+
+**Related:** REQ-FEAT-ROUTE
 
 ### NFR-007 · approved · source: requirements:NFR-007
 
-Maintainability: the directory must be refreshable by clean re-import rather than manual editing.
+The directory must be refreshable by cleanly re-importing an updated OurAirports dataset, with no manual in-app editing.
 
-The airport directory can be refreshed by cleanly re-importing an updated OurAirports dataset, replacing the data without manual in-app editing.
+Maintainability requirement for dataset refresh.
+
+**Related:** REQ-FEAT-DIRECTORY
 
 ### NFR-008 · approved · source: requirements:NFR-008
 
-Security: airport data is read-only everywhere, including via the public endpoints.
+Airport data must be read-only: no way to add, edit, or delete records through the app or its public endpoints.
 
-Airport data is read-only: the app and its public endpoints offer no way to add, edit, or delete airport records, so the directory can only change by re-importing the dataset.
+Security requirement; directory only changes by dataset re-import.
+
+**Related:** REQ-FEAT-DIRECTORY
 
 ### NFR-009 · approved · source: requirements:NFR-009
 
-Security (accepted risk): public search/lookup endpoints intentionally require no authentication.
+Search and lookup endpoints are intentionally public with no authentication, as an accepted risk, because the data is open and there are no accounts or private information.
 
-The search and lookup endpoints are intentionally public and require no credentials or authentication, because the directory is open reference data with no accounts or private information. Accepted risk per requirements input.
+Security (accepted risk): no credentials or authentication required for public endpoints.
+
+**Related:** REQ-FEAT-API
 
 ### NFR-010 · approved · source: requirements:NFR-010
 
-Compliance (accepted risk): the tool is informational only, not for operational flight planning, so no aviation certification or regulatory routing constraints apply.
+The tool is informational only, not for operational flight planning; no aviation certification or regulatory routing constraints apply, and real airways/waypoint routing is out of scope, as an accepted risk.
 
-The tool provides great-circle distances and routes for reference only and is not intended for operational flight planning, so no aviation certification or regulatory routing constraints are applied and real airways or waypoint routing is not provided. Accepted risk per requirements input.
+Compliance (accepted risk): great-circle distances/routes are reference-only.
+
+**Related:** REQ-FEAT-ROUTE
 <!-- sdlc:auto:end narrative -->
 
 <!-- sdlc:auto:start summary -->

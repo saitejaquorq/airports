@@ -5,7 +5,7 @@
 <!-- sdlc:auto:start overview -->
 A list of all the airports and their icao codes , searchable and can plot the flight paths between two destinations
 
-**Documentation version:** v3
+**Documentation version:** v1
 <!-- sdlc:auto:end overview -->
 
 ## Contents
@@ -14,10 +14,10 @@ A list of all the airports and their icao codes , searchable and can plot the fl
 | Document | State |
 |---|---|
 | [Requirements](requirements/README.md) | v1 approved |
-| [Architecture](architecture/README.md) | 21 entries |
+| [Architecture](architecture/README.md) | 18 entries |
 | [Planning](planning/README.md) | 10 entries |
-| [Development](development/README.md) | 0 entries |
-| [Testing](testing/README.md) | 0 entries |
+| [Development](development/README.md) | 5 entries |
+| [Testing](testing/README.md) | 3 entries |
 | [Deployment](deployment/README.md) | 0 entries |
 | [Maintenance](maintenance/README.md) | 0 entries |
 | [Data model](architecture/data-model.md) | generated |
@@ -25,12 +25,12 @@ A list of all the airports and their icao codes , searchable and can plot the fl
 | [Decisions (ADRs)](architecture/adr/README.md) | 4 decisions |
 | [Sprint plan](development/sprint-plan.md) | 3 sprints |
 | [Developer guide](development/developer-guide.md) | generated |
-| [API reference](development/api-reference.md) | 1 route |
+| [API reference](development/api-reference.md) | 3 routes |
 | [Test report](testing/test-report.md) | not run yet |
-| [Tests](testing/test-cases.md) | 0 tests |
+| [Tests](testing/test-cases.md) | 49 tests |
 | [Deployment guide](deployment/deployment-guide.md) | not deployed yet |
 | [Runbook](deployment/runbook.md) | not deployed yet |
 | [Release notes](deployment/release-notes.md) | 0 releases |
 | [Traceability matrix](traceability-matrix.md) | 12 requirements |
-| [Changelog](CHANGELOG.md) | 3 versions |
+| [Changelog](CHANGELOG.md) | 1 version |
 <!-- sdlc:auto:end contents -->

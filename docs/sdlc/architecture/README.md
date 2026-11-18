@@ -5,171 +5,155 @@
 <!-- sdlc:auto:start narrative -->
 ## Overview
 
-### ARCH-001 · approved · source: architecture:summary
+### ARCH-SUMMARY · approved · source: architecture:summary
 
-Airports is a free, public, single-screen responsive web tool for searching ~80,000 world airports and plotting great-circle routes between two of them on an interactive map.
+Airports is a free, single-screen responsive web tool to search ~80,000 airports, view details, and plot great-circle routes with distance on a MapTiler-backed map.
 
-Overall system (v1, approved): React 19 SPA with Leaflet talks to a lean FastAPI 0.115 service that serves search/lookup and computes haversine distance. Airport data is read-only in PostgreSQL 16, loaded from the bundled OurAirports dataset via clean re-import, and indexed into Meilisearch for typo-tolerant type-as-you-go search. No accounts, no writes; search/lookup endpoints are intentionally public with no authentication. Hosted entirely on AWS so it scales down cheaply under unpredictable public traffic.
+React 19 SPA (with Leaflet) talks to a lean FastAPI 0.115 service that serves search/lookup and computes haversine distance. Airport data lives read-only in PostgreSQL 16, loaded from the bundled OurAirports open dataset and refreshed by clean re-import, indexed into Meilisearch for fast, typo-tolerant search. No accounts, no writes; search/lookup endpoints are intentionally public with no authentication. Hosted on AWS to scale down cheaply under unpredictable public traffic.
 
-### ARCH-002 · approved · source: architecture:component:frontend
+**Related:** REQ-STACK, REQ-SERVICES
 
-The Airports Web App is a single responsive React 19 screen covering search, results, detail view, and route plotting.
+### ARCH-COMP-FRONTEND · approved · source: architecture:component:frontend
 
-Component: Airports Web App (SPA), React 19. Single responsive screen with: search box, results list, airport detail view, origin/destination selection, and an interactive Leaflet map that draws the great-circle route with markers and shows distance in NM and km, including map/data attribution.
+Airports Web App (SPA), React 19.
 
-**Related:** ARCH-003, ARCH-007
+Single responsive screen with search box, results list, airport detail view, origin/destination selection, and an interactive Leaflet map that draws the great-circle route with markers and shows distance in NM and km with map/data attribution.
 
-### ARCH-003 · approved · source: architecture:component:api
+**Related:** REQ-FEAT-SEARCH, REQ-FEAT-DETAILS, REQ-FEAT-ROUTE
 
-The Airports API is a public, no-auth FastAPI service serving search, lookup, and distance computation; it is strictly read-only.
+### ARCH-COMP-API · approved · source: architecture:component:api
 
-Component: Airports API, FastAPI 0.115. Serves airport search (delegated to Meilisearch), single-airport lookup by code, and great-circle (haversine) distance computation for a selected origin/destination pair. Offers no create/update/delete of airport data.
+Airports API, FastAPI 0.115.
 
-**Related:** ARCH-005, ARCH-006, ARCH-002
+Public, no-auth HTTP service serving airport search (delegated to Meilisearch), single-airport lookup by code, and great-circle (haversine) distance computation for a selected origin/destination pair. Read-only - offers no create/update/delete of airport data.
 
-### ARCH-004 · approved · source: architecture:component:importer
+**Related:** REQ-FEAT-API, ARCH-EP-SEARCH, ARCH-EP-LOOKUP, ARCH-EP-DISTANCE, ARCH-EP-HEALTH
 
-The Dataset Import Job is an operator-run batch process that refreshes the airport directory from the bundled OurAirports dataset.
+### ARCH-COMP-IMPORTER · approved · source: architecture:component:importer
 
-Component: Dataset Import Job, FastAPI 0.115 codebase run as a CLI job. Operator-run Python job that re-imports the bundled OurAirports dataset: cleanly replaces airport rows in PostgreSQL and rebuilds the Meilisearch index so the directory reflects the updated dataset. No in-app editing exists.
+Dataset Import Job, FastAPI 0.115 codebase run as a CLI job.
 
-**Related:** ARCH-005, ARCH-006
+Operator-run Python job that re-imports the bundled OurAirports dataset: cleanly replaces airport rows in PostgreSQL and (re)builds the Meilisearch index so the directory reflects the updated dataset with no in-app editing.
 
-### ARCH-005 · approved · source: architecture:component:database
+**Related:** REQ-FEAT-DIRECTORY, ARCH-CP-IMPORT
 
-PostgreSQL 16 is the read-only source-of-truth store for the worldwide airport directory.
+### ARCH-COMP-DB · approved · source: architecture:component:database
 
-Component: Airport Directory Database, PostgreSQL 16. Stores the read-only worldwide airport directory (ICAO, IATA, name, city, country, coordinates) as the source of truth; re-imported on refresh; queried for airport lookup and detail.
+Airport Directory Database, PostgreSQL 16.
 
-**Related:** ARCH-012
+Stores the read-only worldwide airport directory (ICAO, IATA, name, city, country, coordinates) as the source of truth, re-imported on refresh and queried for airport lookup and detail.
 
-### ARCH-006 · approved · source: architecture:component:search
+**Related:** REQ-STACK, ARCH-ENTITY-AIRPORTS
 
-Meilisearch provides typo-tolerant, type-as-you-go full-text search across the airport directory.
+### ARCH-COMP-SEARCH · approved · source: architecture:component:search
 
-Component: Airport Search Index, Meilisearch v1.10.3 (getmeili/meilisearch). Typo-tolerant, type-as-you-go full-text search over ICAO code, IATA code, name, city, and country across the full directory, returning ranked matching airports instantly.
+Airport Search Index, Meilisearch v1.10.3 (getmeili/meilisearch).
 
-**Related:** ARCH-005
+Typo-tolerant, type-as-you-go full-text search over ICAO code, IATA code, name, city, and country across the full directory, returning ranked matching airports instantly.
 
-### ARCH-007 · approved · source: architecture:component:maptiler
+**Related:** REQ-SERVICES, NFR-001
 
-MapTiler is the external SaaS tile provider rendered under the great-circle route and markers in the browser.
+### ARCH-COMP-MAPTILER · approved · source: architecture:component:maptiler
 
-Component: MapTiler Tile Provider, MapTiler (external SaaS tiles). External map tile service providing background map imagery the browser renders under the great-circle route line and markers, with provider attribution.
+MapTiler Tile Provider, external SaaS tiles.
 
-**Related:** ARCH-002
+External map tile service providing background map imagery the browser renders under the great-circle route line and markers, with provider attribution.
 
-### ARCH-008 · approved · source: architecture:critical_path:search
+**Related:** REQ-SERVICES, NFR-006
 
-Type-as-you-go airport search flows from the SPA through the API to Meilisearch and back as a ranked result list.
+### ARCH-CP-SEARCH · approved · source: architecture:critical-path:search
 
-Critical path: User types part of a code, name, city, or country; the SPA queries the API, which forwards the query to Meilisearch for fast typo-tolerant matches and returns a result list. An empty match set returns an empty list with a success status, not an error.
+Type-as-you-go airport search critical path.
 
-**Related:** ARCH-002, ARCH-003, ARCH-006
+User types part of a code, name, city, or country; the SPA queries the API, which forwards the query to Meilisearch for fast typo-tolerant matches and returns a result list. An empty match set returns an empty list with a success status, not an error.
 
-### ARCH-009 · approved · source: architecture:critical_path:detail_lookup
+**Related:** ARCH-COMP-FRONTEND, ARCH-COMP-API, ARCH-COMP-SEARCH
 
-Airport detail lookup resolves a single airport's full record by ICAO or IATA code from PostgreSQL.
+### ARCH-CP-DETAIL · approved · source: architecture:critical-path:detail-lookup
 
-Critical path: User selects a result or a public consumer calls the lookup endpoint by ICAO or IATA code; the API reads the single airport from PostgreSQL and returns full details, or a not-found response when the code does not exist. Missing IATA is returned as empty, not a wrong value.
+Airport detail lookup critical path.
 
-**Related:** ARCH-002, ARCH-003, ARCH-005
+User selects a result or a public consumer calls the lookup endpoint by ICAO or IATA code; the API reads the single airport from PostgreSQL and returns full details, or a not-found response when the code does not exist. Missing IATA is returned as empty, not a wrong value.
 
-### ARCH-010 · approved · source: architecture:critical_path:route_distance
+**Related:** ARCH-COMP-FRONTEND, ARCH-COMP-API, ARCH-COMP-DB
 
-Plotting a route computes haversine distance via the API, then draws the great-circle line and markers on the map with NM/km distance.
+### ARCH-CP-ROUTE · approved · source: architecture:critical-path:route
 
-Critical path: With an origin and destination chosen, the SPA asks the API for the haversine distance, then draws a great-circle polyline and two markers on the Leaflet/MapTiler map and shows the distance in NM and km. Same origin and destination yields zero distance and a point rather than an error.
+Plot great-circle route and distance critical path.
 
-**Related:** ARCH-002, ARCH-003, ARCH-007
+With an origin and destination chosen, the SPA asks the API for the haversine distance, then draws a great-circle polyline and two markers on the Leaflet/MapTiler map and shows the distance in NM and km. Same origin and destination yields zero distance and a point rather than an error.
 
-### ARCH-011 · approved · source: architecture:critical_path:import
+**Related:** ARCH-COMP-FRONTEND, ARCH-COMP-API, ARCH-COMP-MAPTILER
 
-Operator dataset re-import transactionally replaces the airport table and rebuilds the search index from a bundled CSV.
+### ARCH-CP-IMPORT · approved · source: architecture:critical-path:import
 
-Critical path: Operator runs the import job pointing at a bundled OurAirports CSV; it parses rows, replaces the airport table transactionally, then rebuilds the Meilisearch index so search and lookup reflect the new data. No in-app editing exists.
+Operator dataset re-import critical path.
 
-**Related:** ARCH-004, ARCH-005, ARCH-006
+Operator runs the import job pointing at a bundled OurAirports CSV; it parses rows, replaces the airport table transactionally, then rebuilds the Meilisearch index so search and lookup reflect the new data with no in-app editing.
 
-### ARCH-012 · approved · source: architecture:entity:airports
+**Related:** ARCH-COMP-IMPORTER, ARCH-COMP-DB, ARCH-COMP-SEARCH
 
-The airports entity is the single data model: one row per airport with codes, name, location, country, type, and import timestamp.
+### ARCH-ENTITY-AIRPORTS · approved · source: architecture:entity:airports
 
-Entity: airports - fields: id, ident, icao_code, iata_code, name, municipality, iso_country, country_name, airport_type, latitude_deg, longitude_deg, imported_at.
+Single core entity: airports.
 
-**Related:** ARCH-005
+Fields: id, ident, icao_code, iata_code, name, municipality, iso_country, country_name, airport_type, latitude_deg, longitude_deg, imported_at.
 
-### ARCH-013 · approved · source: architecture:endpoint:/airports/search
+**Related:** ARCH-COMP-DB
 
-GET /airports/search returns airports matching a free-text query via Meilisearch.
+### ARCH-EP-SEARCH · approved · source: architecture:endpoint:GET /airports/search
 
-Endpoint: GET /airports/search - Search airports by ICAO code, IATA code, name, city, or country via Meilisearch; returns matching airports or an empty list on no match.
+GET /airports/search - search airports by code, name, city, or country.
 
-**Related:** ARCH-003, ARCH-006, ARCH-008
+Searches airports by ICAO code, IATA code, name, city, or country via Meilisearch; returns matching airports or an empty list on no match.
 
-### ARCH-014 · approved · source: architecture:endpoint:/airports/{code}
+**Related:** REQ-FEAT-API
 
-GET /airports/{code} returns full details for one airport by ICAO or IATA code, or 404.
+### ARCH-EP-LOOKUP · approved · source: architecture:endpoint:GET /airports/{code}
 
-Endpoint: GET /airports/{code} - Look up a single airport by a valid ICAO or IATA code and return full details, or 404 if the code is not in the dataset.
+GET /airports/{code} - look up a single airport by ICAO or IATA code.
 
-**Related:** ARCH-003, ARCH-005, ARCH-009
+Looks up a single airport by a valid ICAO or IATA code and returns full details, or 404 if the code is not in the dataset.
 
-### ARCH-015 · approved · source: architecture:endpoint:/routes/distance
+**Related:** REQ-FEAT-API
 
-GET /routes/distance returns the great-circle distance between two airports in km and nautical miles.
+### ARCH-EP-DISTANCE · approved · source: architecture:endpoint:GET /routes/distance
 
-Endpoint: GET /routes/distance - Compute the great-circle (haversine) distance between two airports selected by code; returns distance in kilometres and nautical miles. Same origin and destination returns zero.
+GET /routes/distance - compute great-circle distance between two airports.
 
-**Related:** ARCH-003, ARCH-010
+Computes the great-circle (haversine) distance between two airports selected by code; returns distance in kilometres and nautical miles. Same origin and destination returns zero.
 
-### ARCH-016 · approved · source: architecture:endpoint:/health
+**Related:** REQ-FEAT-ROUTE
 
-GET /health reports liveness/readiness of the API and its dependencies.
+### ARCH-EP-HEALTH · approved · source: architecture:endpoint:GET /health
 
-Endpoint: GET /health - Liveness/readiness check for the service and its dependencies.
+GET /health - liveness/readiness check.
 
-**Related:** ARCH-003
+Liveness/readiness check for the service and its dependencies.
 
-### ARCH-017 · approved · source: architecture:deployment_nodes
+### ARCH-DEPLOY · approved · source: architecture:deployment-nodes
 
-Planned AWS deployment topology: static SPA on S3/CloudFront, API on App Runner, Meilisearch on Fargate, PostgreSQL on RDS, import job as an ECS task, with MapTiler as an external SaaS dependency.
+Six deployment nodes planned on AWS plus external MapTiler.
 
-Deployment nodes (as designed): Web App (SPA) on S3 + CloudFront static hosting, React 19 static build (Vite). Airports API on AWS App Runner (container), FastAPI 0.115 on Python/Uvicorn. Meilisearch on ECS/Fargate container, getmeili/meilisearch:v1.10.3. PostgreSQL on Amazon RDS for PostgreSQL 16. Import Job on ECS scheduled/one-off task, FastAPI 0.115 codebase run as a CLI job. MapTiler Tiles via MapTiler external SaaS, hosted tile API.
+- Web App (SPA): S3 + CloudFront static hosting, React 19 static build (Vite).
+- Airports API: AWS App Runner (container), FastAPI 0.115 on Python/Uvicorn.
+- Meilisearch: ECS/Fargate container, getmeili/meilisearch:v1.10.3.
+- PostgreSQL: Amazon RDS for PostgreSQL 16.
+- Import Job: ECS scheduled/one-off task, FastAPI 0.115 codebase run as a CLI job.
+- MapTiler Tiles: MapTiler external SaaS, hosted tile API.
 
-**Related:** ARCH-002, ARCH-003, ARCH-004, ARCH-005, ARCH-006, ARCH-007
+**Related:** ARCH-COMP-FRONTEND, ARCH-COMP-API, ARCH-COMP-SEARCH, ARCH-COMP-DB, ARCH-COMP-IMPORTER, ARCH-COMP-MAPTILER
 
-### ARCH-018 · approved · source: architecture:technology:frontend
+### ARCH-TECH · approved · source: architecture:technology-decisions
 
-React 19 was chosen for the frontend over Vue or Svelte.
+Architecture confirms the approved stack and records alternatives considered for each choice.
 
-Decision: Frontend = React 19 (alternatives considered: Vue, Svelte). Rationale: the product is one interactive screen - search box, results list, and a Leaflet map drawing a route - which React's component and state model handles cleanly, and it pairs directly with Leaflet and MapTiler tiles for the great-circle line and markers.
+- Frontend: React 19 (alternatives considered: Vue, Svelte) - handles the single interactive screen's component/state needs and pairs directly with Leaflet/MapTiler.
+- Backend: FastAPI 0.115 (alternatives considered: Flask, Django REST Framework) - lean service for search delegation, lookup, and haversine distance; also hosts the import job.
+- Database: PostgreSQL 16 (alternatives considered: SQLite, MySQL) - ~80,000 read-only rows store and re-import cleanly; answers lookup-by-code without extra moving parts.
+- Cloud: AWS (alternatives considered: GCP, Azure) - serves the static SPA (S3/CloudFront), runs the API and Meilisearch container, hosts PostgreSQL (RDS), scales down cheaply for a free tool with no revenue.
 
-**Related:** ARCH-002
-
-### ARCH-019 · approved · source: architecture:technology:backend
-
-FastAPI 0.115 was chosen for the backend over Flask or Django REST Framework.
-
-Decision: Backend = FastAPI 0.115 (alternatives considered: Flask, Django REST Framework). Rationale: the server's job is small - serve search results from Meilisearch, look up an airport, and compute a haversine distance - and FastAPI is a lean, fast Python service that also hosts the OurAirports import job naturally.
-
-**Related:** ARCH-003, ARCH-004
-
-### ARCH-020 · approved · source: architecture:technology:database
-
-PostgreSQL 16 was chosen for the database over SQLite or MySQL.
-
-Decision: Database = PostgreSQL 16 (alternatives considered: SQLite, MySQL). Rationale: roughly 80,000 read-only airport rows with codes, names, cities, countries, and coordinates store comfortably and re-import cleanly, and Postgres answers lookup-by-code queries without extra moving parts.
-
-**Related:** ARCH-005
-
-### ARCH-021 · approved · source: architecture:technology:cloud
-
-AWS was chosen as the cloud platform over GCP or Azure.
-
-Decision: Cloud = AWS (alternatives considered: GCP, Azure). Rationale: AWS serves the static SPA (S3/CloudFront), runs the small FastAPI service and Meilisearch container, and hosts PostgreSQL (RDS), and it scales down cheaply when traffic is low - which matters for a free tool with no revenue.
-
-**Related:** ARCH-017
+**Related:** REQ-STACK
 <!-- sdlc:auto:end narrative -->
 
 <!-- sdlc:auto:start building-blocks -->
