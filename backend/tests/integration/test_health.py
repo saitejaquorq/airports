@@ -19,7 +19,7 @@ def test_health_reports_ok(client: TestClient) -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "ok"
-    assert set(body["services"]) == {"meilisearch"}
+    assert set(body["services"]) == {"database", "meilisearch"}
 
 
 def test_the_openapi_document_builds(client: TestClient) -> None:

@@ -40,22 +40,24 @@ export default defineConfig({
   webServer: runAgainstDeployment
     ? undefined
     : [
-      {
-        // The generated backend defaults to a local SQLite database (see
-        // backend/app/database.py), so the API runs end to end with no database
-        // server to stand up. Its packages are in backend/.venv (installed before the run).
-        command:
-          "cd ../backend && .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
-        url: "http://127.0.0.1:8000/health",
-        reuseExistingServer: !process.env.CI,
-        timeout: 180_000,
-      },
-      {
-        command: "npm run build && npm run preview -- --port 4173 --host 127.0.0.1",
-        url: "http://127.0.0.1:4173",
-        reuseExistingServer: !process.env.CI,
-        // A cold production build in a sandbox can take minutes.
-        timeout: 300_000,
-      },
-    ],
+        {
+          // The backend talks to the real Postgres and Meilisearch the project's
+          // docker-compose brings up (see backend/app/database.py and
+          // backend/app/services.py) -- `DATABASE_URL`/`MEILI_URL` default to those
+          // local services, so nothing else needs to be standing by for this to boot.
+          // Its packages are in backend/.venv (installed before the run).
+          command:
+            "cd ../backend && .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000",
+          url: "http://127.0.0.1:8000/health",
+          reuseExistingServer: !process.env.CI,
+          timeout: 180_000,
+        },
+        {
+          command: "npm run build && npm run preview -- --port 4173 --host 127.0.0.1",
+          url: "http://127.0.0.1:4173",
+          reuseExistingServer: !process.env.CI,
+          // A cold production build in a sandbox can take minutes.
+          timeout: 300_000,
+        },
+      ],
 });

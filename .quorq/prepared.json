@@ -1,0 +1,33 @@
+{
+  "key": {
+    "app_design_id": "5abefb23-500c-4c15-be57-e7fb4d46c062",
+    "app_design_version": 1,
+    "architecture_document_id": "d76b2703-0034-41e9-9dc1-63693e669550",
+    "architecture_version": 1
+  },
+  "outcome": "prepared",
+  "packages": [
+    {
+      "ecosystem": "npm",
+      "error": "already provided by the scaffold",
+      "name": "leaflet",
+      "status": "skipped",
+      "version": ""
+    },
+    {
+      "ecosystem": "npm",
+      "error": "already provided by the scaffold",
+      "name": "react-leaflet",
+      "status": "skipped",
+      "version": ""
+    },
+    {
+      "ecosystem": "pypi",
+      "installed_version": "0.43.0",
+      "name": "meilisearch",
+      "status": "installed",
+      "version": ">=0.31.0"
+    }
+  ],
+  "prepared_by_run": "825fa928-9f53-4c62-a55f-63ef7b15b97a"
+}

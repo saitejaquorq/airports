@@ -1,10 +1,10 @@
 """Engine, session factory and the request-scoped session dependency.
 
-SQLite by default so a fresh clone runs with nothing but `pip install -r
-requirements.txt` -- the approved architecture may name Postgres or MySQL, but
-naming one is not the same as having one, and a scaffold that cannot start
-without a database server is a scaffold nobody runs. Point `DATABASE_URL` at
-the real thing when it exists; nothing else has to change.
+The approved architecture names PostgreSQL as the airport directory's source
+of truth (see ENVIRONMENT.md), queried directly for lookups and populated
+wholesale by the import job. There is deliberately no SQLite stand-in here:
+`DATABASE_URL` defaults to the Postgres docker-compose brings up locally, and
+every other environment (tests included) always has the real one set.
 """
 
 import os
@@ -13,13 +13,9 @@ from collections.abc import Iterator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg://app:app@localhost:5432/app")
 
-# SQLite rejects a connection made on one thread and used on another, which is
-# exactly what happens when FastAPI runs a sync dependency in its threadpool.
-_connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
-
-engine = create_engine(DATABASE_URL, connect_args=_connect_args, future=True)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, future=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
 

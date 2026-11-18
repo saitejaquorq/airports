@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import models  # noqa: F401 -- imported so the tables register before create_all
 from app.database import Base, engine
+from app.routers import airports, distance
 from app.services import configured_services
 
 
@@ -35,7 +36,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(
     title="airports",
-    description="A list of all the airports and their icao codes , searchable and can plot the flight paths between two destinations",
+    description=(
+        "A list of all the airports and their icao codes , searchable and can plot "
+        "the flight paths between two destinations"
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -53,6 +57,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(airports.router)
+app.include_router(distance.router)
 
 
 @app.get("/health")
