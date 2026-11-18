@@ -13,29 +13,36 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app import models  # noqa: F401 -- imported so the tables register before create_all
-from app.database import Base, engine
+from app.importer import import_if_empty
+from app.routers.airports import router as airports_router
+from app.search_index import index_if_needed
 from app.services import configured_services
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """The scaffold ships no migrations, so the tables are created from the models
-    when the application starts. Replace this with Alembic before anything holds data
-    worth keeping.
+    """Schema changes happen only through the Alembic migrations in
+    `backend/alembic/versions/`; this no longer creates tables itself.
 
-    This runs on startup and not at import, so importing the application never opens a
-    connection. A test can therefore point `get_db` at a database of its own, and a
-    deployment whose `DATABASE_URL` names a server that is not up fails where you can
-    read the error, not while pytest collects the files.
+    On startup, load the bundled airport dataset once, but only when the
+    `airports` table is empty, and never let a missing dataset file or a
+    database whose migrations have not run yet block or crash startup.
+
+    Then create/configure the Meilisearch index and populate it only when
+    it is empty while the table is not; a Meilisearch outage logs a warning
+    and never blocks startup.
     """
-    Base.metadata.create_all(bind=engine)
+    import_if_empty()
+    index_if_needed()
     yield
 
 
 app = FastAPI(
     title="airports",
-    description="A list of all the airports and their icao codes , searchable and can plot the flight paths between two destinations",
+    description=(
+        "A list of all the airports and their icao codes, searchable and can "
+        "plot the flight paths between two destinations"
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -53,6 +60,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(airports_router)
 
 
 @app.get("/health")
