@@ -1,7 +1,7 @@
 """Idempotent OurAirports CSV import job.
 
-Run as `python -m app.importer [path-or-url]`, or call `import_airports()` from
-code. With no argument it reads `AIRPORTS_DATASET_PATH` if set, else the bundled
+Run as `python -m app.importer [path]`, or call `import_airports()` from code.
+With no argument it reads `AIRPORTS_DATASET_PATH` if set, else the bundled
 snapshot under `backend/data/`. Streams the file row by row and inserts in
 batches, so memory use stays bounded no matter how large the file is -- the full
 ~80,000-row OurAirports export is expected to fit this.
@@ -12,11 +12,9 @@ updated, and a good one never leaves duplicate idents behind.
 """
 
 import csv
-import gzip
 import logging
 import os
 import sys
-import urllib.request
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 
@@ -30,7 +28,6 @@ logger = logging.getLogger(__name__)
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 DEFAULT_DATASET_PATH = DATA_DIR / "airports.csv"
-DEFAULT_DATASET_GZ_PATH = DATA_DIR / "airports.csv.gz"
 BATCH_SIZE = 1000
 
 # OurAirports does not ship country names in airports.csv; this covers the
@@ -88,28 +85,13 @@ COUNTRY_NAMES: dict[str, str] = {
 
 
 def _default_dataset() -> str | None:
-    for candidate in (DEFAULT_DATASET_PATH, DEFAULT_DATASET_GZ_PATH):
-        if candidate.exists():
-            return str(candidate)
-    return None
+    return str(DEFAULT_DATASET_PATH) if DEFAULT_DATASET_PATH.exists() else None
 
 
 def _open_source(source: str) -> Iterator[str]:
-    """Yield decoded text lines from a local path (.csv or .csv.gz) or an http(s) URL."""
-    if source.startswith(("http://", "https://")):
-        with urllib.request.urlopen(source, timeout=30) as response:  # noqa: S310
-            data = response.read()
-        if source.endswith(".gz"):
-            data = gzip.decompress(data)
-        yield from data.decode("utf-8").splitlines()
-        return
-    path = Path(source)
-    if path.suffix == ".gz":
-        with gzip.open(path, "rt", encoding="utf-8") as handle:
-            yield from handle
-    else:
-        with open(path, encoding="utf-8") as handle:
-            yield from handle
+    """Yield decoded text lines from a local CSV path."""
+    with open(source, encoding="utf-8") as handle:
+        yield from handle
 
 
 def parse_row(row: dict) -> dict | None:
@@ -174,8 +156,8 @@ def _insert_batches(db: Session, rows: Iterable[dict]) -> int:
 def import_airports(source: str | None = None, session: Session | None = None) -> int:
     """Replace the `airports` table's contents with `source`'s rows.
 
-    `source` is a local path (.csv or .csv.gz) or an http(s) URL; it defaults to
-    `AIRPORTS_DATASET_PATH` or the bundled snapshot. Returns the number of rows
+    `source` is a local CSV path; it defaults to `AIRPORTS_DATASET_PATH` or the
+    bundled snapshot. Returns the number of rows
     loaded. Runs as one transaction, so a file that fails partway through never
     leaves the table half replaced.
 
