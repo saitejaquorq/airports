@@ -35,7 +35,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(
     title="airports",
-    description="A list of all the airports and their icao codes , searchable and can plot the flight paths between two destinations",
+    description=(
+        "A list of all the airports and their icao codes, searchable and can "
+        "plot the flight paths between two destinations"
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
