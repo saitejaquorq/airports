@@ -9,16 +9,16 @@ Built from recorded links, not written by a model: requirement key → plan item
 <!-- sdlc:auto:start matrix -->
 | Requirement | Epic | Title | Plan items | Sprint | Design | Code | Commits | Ticket | Tests | AC tests | Deployed |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| US-001 | EPIC-001 | Search airports by code, name, city, or country | — | — | — | — | — | not started | not run | 0/4 tested · 0/4 passing | — |
-| US-002 | EPIC-001 | Review and select a search result | — | — | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
-| US-003 | EPIC-002 | View airport details | — | — | — | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
-| US-004 | EPIC-003 | Select origin and destination airports | — | — | — | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
-| US-005 | EPIC-003 | View the great-circle route on an interactive map | — | — | — | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
-| US-006 | EPIC-003 | View route distance in nautical miles and kilometres | — | — | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
-| US-007 | EPIC-004 | Load the worldwide airport directory from a bundled open dataset | — | — | — | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
-| US-008 | EPIC-005 | Public airport search endpoint | — | — | — | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
-| US-009 | EPIC-005 | Public airport lookup endpoint | — | — | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
-| US-010 | EPIC-006 | Use the app on desktop and mobile browsers | — | — | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
-| US-011 | EPIC-006 | Use the app free of charge | — | — | — | — | — | not started | not run | 0/1 tested · 0/1 passing | — |
-| US-012 | EPIC-007 | Getting-started guide for users and operators | — | — | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
+| US-001 | EPIC-001 | Search airports by code, name, city, or country | US-001 | 2 | GET /airports/search, airports, api, frontend | — | — | not started | not run | 0/4 tested · 0/4 passing | — |
+| US-002 | EPIC-001 | Review and select a search result | US-002 | 2 | airports, frontend | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
+| US-003 | EPIC-002 | View airport details | US-003 | 2 | GET /airports/{code}, airports, api, frontend | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
+| US-004 | EPIC-003 | Select origin and destination airports | US-004 | 2 | airports, frontend | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
+| US-005 | EPIC-003 | View the great-circle route on an interactive map | US-005, US-005-T1, US-005-T2, US-005-T3, US-005-T4 | 3 | GET /routes/distance, airports, api, frontend, maptiler | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
+| US-006 | EPIC-003 | View route distance in nautical miles and kilometres | US-006 | 3 | GET /routes/distance, airports, api, frontend | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
+| US-007 | EPIC-004 | Load the worldwide airport directory from a bundled open dataset | US-007, US-007-T1, US-007-T2, US-007-T3, US-007-T4 | 1 | airports, database, importer, search | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
+| US-008 | EPIC-005 | Public airport search endpoint | US-008 | 1 | GET /airports/search, airports, api, search | — | — | not started | not run | 0/3 tested · 0/3 passing | — |
+| US-009 | EPIC-005 | Public airport lookup endpoint | US-009 | 1 | GET /airports/{code}, airports, api, database | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
+| US-010 | EPIC-006 | Use the app on desktop and mobile browsers | US-010 | 3 | frontend | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
+| US-011 | EPIC-006 | Use the app free of charge | US-011 | 1 | — | — | — | not started | not run | 0/1 tested · 0/1 passing | — |
+| US-012 | EPIC-007 | Getting-started guide for users and operators | US-012 | 3 | — | — | — | not started | not run | 0/2 tested · 0/2 passing | — |
 <!-- sdlc:auto:end matrix -->
