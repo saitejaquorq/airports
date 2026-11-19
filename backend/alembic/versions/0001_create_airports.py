@@ -35,7 +35,12 @@ def upgrade() -> None:
         sa.Column(
             "imported_at",
             sa.DateTime(timezone=True),
-            server_default=sa.text("now()"),
+            # `sa.func.now()` rather than `sa.text("now()")`: the latter is raw
+            # PostgreSQL SQL and breaks `CREATE TABLE` on any other dialect (the
+            # app's own SQLite fallback in `app/database.py` included). `func.now()`
+            # compiles per-dialect -- `now()` on Postgres, `CURRENT_TIMESTAMP` on
+            # SQLite -- so this migration runs against whatever `DATABASE_URL` names.
+            server_default=sa.func.now(),
             nullable=False,
         ),
     )
