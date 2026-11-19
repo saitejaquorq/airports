@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Table, THead, TBody, TR, TH, TD } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Search, Check, ChevronRight, ChevronDown, AlertCircle } = Icons;
 
 const DOC_META = {
@@ -130,8 +129,7 @@ const ENDPOINTS = [
     method: "GET",
     path: "/health",
     query: "/health",
-    purpose:
-      "Service and dataset status, including when the bundled dataset was last imported.",
+    purpose: "Service and dataset status, including when the bundled dataset was last imported.",
     note: null,
     status: "200 OK",
     body: `{
@@ -151,8 +149,7 @@ export default function Screen() {
   const neutral = brand.neutralColor;
   const accent = brand.accentColor;
   const rule = "rgba(17,17,17,0.14)";
-  const mono =
-    "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace";
+  const mono = "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace";
 
   const labelStyle = {
     fontSize: "11px",
@@ -214,25 +211,19 @@ export default function Screen() {
 
         {/* Row 2 — intro */}
         <section data-wf="b-1-0" className="mb-10">
-          <div
-            className="border-l-2 pl-4"
-            style={{ borderColor: ink }}
-          >
-            <p
-              className="max-w-[68ch] text-[16px] leading-[1.6]"
-              style={{ color: ink }}
-            >
-              How to search the directory, read an airport&rsquo;s details and plot a
-              great-circle route with distance. Free to use on desktop and mobile
-              &mdash; no account, sign-up or payment.
+          <div className="border-l-2 pl-4" style={{ borderColor: ink }}>
+            <p className="max-w-[68ch] text-[16px] leading-[1.6]" style={{ color: ink }}>
+              How to search the directory, read an airport&rsquo;s details and plot a great-circle
+              route with distance. Free to use on desktop and mobile &mdash; no account, sign-up or
+              payment.
             </p>
             <p
               className="gs-tabular mt-3 max-w-[68ch] text-[13px] leading-[1.6]"
               style={{ color: neutral }}
             >
               {DOC_META.airports.toLocaleString("en-GB")} airports from the bundled{" "}
-              {DOC_META.dataset} open dataset. The layout reflows to a single column on
-              phones; the map, search and details stay usable at every width.
+              {DOC_META.dataset} open dataset. The layout reflows to a single column on phones; the
+              map, search and details stay usable at every width.
             </p>
           </div>
         </section>
@@ -277,10 +268,7 @@ export default function Screen() {
                     {step.n}
                   </span>
                   <div className="min-w-0">
-                    <p
-                      className="text-[15px] font-semibold leading-[1.45]"
-                      style={{ color: ink }}
-                    >
+                    <p className="text-[15px] font-semibold leading-[1.45]" style={{ color: ink }}>
                       <span className="sr-only">{`Step ${step.n}. `}</span>
                       {step.text}
                     </p>
@@ -321,14 +309,7 @@ export default function Screen() {
                 role="img"
                 aria-label="A great-circle arc drawn from London Heathrow to New York John F Kennedy."
               >
-                <line
-                  x1="0"
-                  y1="100"
-                  x2="260"
-                  y2="100"
-                  stroke={rule}
-                  strokeWidth="1"
-                />
+                <line x1="0" y1="100" x2="260" y2="100" stroke={rule} strokeWidth="1" />
                 <path
                   d="M232 86 C 180 10, 90 6, 26 44"
                   fill="none"
@@ -398,12 +379,9 @@ export default function Screen() {
             </span>
           </div>
 
-          <p
-            className="mt-3 max-w-[72ch] text-[13px] leading-[1.6]"
-            style={{ color: neutral }}
-          >
-            Call these from a browser, a script or your own app. No token, no account,
-            no rate-limit sign-up. Base URL{" "}
+          <p className="mt-3 max-w-[72ch] text-[13px] leading-[1.6]" style={{ color: neutral }}>
+            Call these from a browser, a script or your own app. No token, no account, no rate-limit
+            sign-up. Base URL{" "}
             <code
               className="px-1 py-[1px] text-[12px]"
               style={{ fontFamily: mono, border: `1px solid ${rule}`, color: ink }}
@@ -526,7 +504,10 @@ export default function Screen() {
                               <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
                             )}
                             {isOpen ? "Hide JSON" : "Show JSON"}
-                            <span className="sr-only"> for {ep.method} {ep.path}</span>
+                            <span className="sr-only">
+                              {" "}
+                              for {ep.method} {ep.path}
+                            </span>
                           </button>
                         </TD>
                       </TR>
@@ -574,22 +555,16 @@ export default function Screen() {
           </div>
 
           {openKey === null ? (
-            <p
-              className="mt-4 text-[12px]"
-              style={{ color: neutral }}
-            >
-              All four example responses are collapsed. Choose <strong style={{ color: ink }}>Show JSON</strong> on any
-              row to read the payload.
+            <p className="mt-4 text-[12px]" style={{ color: neutral }}>
+              All four example responses are collapsed. Choose{" "}
+              <strong style={{ color: ink }}>Show JSON</strong> on any row to read the payload.
             </p>
           ) : null}
         </section>
 
         {/* Row 5 — setup */}
         <section data-wf="b-4-0">
-          <div
-            className="border-b-2 pb-2"
-            style={{ borderColor: ink }}
-          >
+          <div className="border-b-2 pb-2" style={{ borderColor: ink }}>
             <h2
               className="text-[20px] font-bold tracking-tight"
               style={{ fontFamily: brand.fontHeading, color: ink }}
@@ -600,29 +575,21 @@ export default function Screen() {
           <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <p style={labelStyle}>Airport data</p>
-              <p
-                className="mt-2 max-w-[62ch] text-[14px] leading-[1.6]"
-                style={{ color: ink }}
-              >
-                Airport data comes from the bundled OurAirports dataset and is read-only
-                &mdash; re-import the file to refresh it. Nothing in the app edits, adds
-                or deletes an airport.
+              <p className="mt-2 max-w-[62ch] text-[14px] leading-[1.6]" style={{ color: ink }}>
+                Airport data comes from the bundled OurAirports dataset and is read-only &mdash;
+                re-import the file to refresh it. Nothing in the app edits, adds or deletes an
+                airport.
               </p>
-              <p
-                className="gs-tabular mt-2 text-[12px]"
-                style={{ color: neutral }}
-              >
-                Current import: {DOC_META.importedAt} · {DOC_META.airports.toLocaleString("en-GB")} airports
+              <p className="gs-tabular mt-2 text-[12px]" style={{ color: neutral }}>
+                Current import: {DOC_META.importedAt} · {DOC_META.airports.toLocaleString("en-GB")}{" "}
+                airports
               </p>
             </div>
             <div>
               <p style={labelStyle}>Map tiles</p>
-              <p
-                className="mt-2 max-w-[62ch] text-[14px] leading-[1.6]"
-                style={{ color: ink }}
-              >
-                For the map set the key below in your environment file and keep
-                attribution visible on every view of the map.
+              <p className="mt-2 max-w-[62ch] text-[14px] leading-[1.6]" style={{ color: ink }}>
+                For the map set the key below in your environment file and keep attribution visible
+                on every view of the map.
               </p>
               <pre
                 className="mt-3 overflow-x-auto px-3 py-2 text-[12px] leading-[1.6]"
@@ -634,14 +601,11 @@ export default function Screen() {
                   margin: 0,
                 }}
               >
-{`MAPTILER_KEY=<your-maptiler-api-key>`}
+                {`MAPTILER_KEY=<your-maptiler-api-key>`}
               </pre>
-              <p
-                className="mt-3 text-[12px] leading-[1.6]"
-                style={{ color: neutral }}
-              >
-                Attribution string: &copy; MapTiler &copy; OpenStreetMap contributors ·
-                Airport data: OurAirports (public domain).
+              <p className="mt-3 text-[12px] leading-[1.6]" style={{ color: neutral }}>
+                Attribution string: &copy; MapTiler &copy; OpenStreetMap contributors · Airport
+                data: OurAirports (public domain).
               </p>
             </div>
           </div>

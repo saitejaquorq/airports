@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Label, Select } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Search } = Icons;
 
 const PRODUCT = "airports";
@@ -18,26 +17,266 @@ const DATASET_NOTE = "OurAirports bundled dataset · imported 02 Nov 2026 · fre
 const mix = (colour, percent) => `color-mix(in srgb, ${colour} ${percent}%, transparent)`;
 
 const AIRPORTS = [
-  { id: 2434, ident: "HKJK", icao_code: "HKJK", iata_code: "NBO", name: "Jomo Kenyatta International Airport", municipality: "Nairobi", iso_country: "KE", country_name: "Kenya", airport_type: "large_airport", latitude_deg: -1.319167, longitude_deg: 36.927502 },
-  { id: 2440, ident: "HKNW", icao_code: "HKNW", iata_code: "WIL", name: "Nairobi Wilson Airport", municipality: "Nairobi", iso_country: "KE", country_name: "Kenya", airport_type: "medium_airport", latitude_deg: -1.321720, longitude_deg: 36.814800 },
-  { id: 2447, ident: "HKRE", icao_code: "HKRE", iata_code: "", name: "Moi Air Base", municipality: "Nairobi", iso_country: "KE", country_name: "Kenya", airport_type: "medium_airport", latitude_deg: -1.323890, longitude_deg: 36.862202 },
-  { id: 2437, ident: "HKMO", icao_code: "HKMO", iata_code: "MBA", name: "Moi International Airport", municipality: "Mombasa", iso_country: "KE", country_name: "Kenya", airport_type: "large_airport", latitude_deg: -4.034830, longitude_deg: 39.594200 },
-  { id: 2428, ident: "HKEL", icao_code: "HKEL", iata_code: "EDL", name: "Eldoret International Airport", municipality: "Eldoret", iso_country: "KE", country_name: "Kenya", airport_type: "medium_airport", latitude_deg: 0.404458, longitude_deg: 35.238899 },
-  { id: 2435, ident: "HKKI", icao_code: "HKKI", iata_code: "KIS", name: "Kisumu Airport", municipality: "Kisumu", iso_country: "KE", country_name: "Kenya", airport_type: "medium_airport", latitude_deg: -0.086139, longitude_deg: 34.728901 },
-  { id: 2611, ident: "HTDA", icao_code: "HTDA", iata_code: "DAR", name: "Julius Nyerere International Airport", municipality: "Dar es Salaam", iso_country: "TZ", country_name: "Tanzania", airport_type: "large_airport", latitude_deg: -6.878110, longitude_deg: 39.202599 },
-  { id: 2654, ident: "HUEN", icao_code: "HUEN", iata_code: "EBB", name: "Entebbe International Airport", municipality: "Entebbe", iso_country: "UG", country_name: "Uganda", airport_type: "large_airport", latitude_deg: 0.042386, longitude_deg: 32.443501 },
-  { id: 2322, ident: "HAAB", icao_code: "HAAB", iata_code: "ADD", name: "Addis Ababa Bole International Airport", municipality: "Addis Ababa", iso_country: "ET", country_name: "Ethiopia", airport_type: "large_airport", latitude_deg: 8.977890, longitude_deg: 38.799301 },
-  { id: 2177, ident: "FACT", icao_code: "FACT", iata_code: "CPT", name: "Cape Town International Airport", municipality: "Cape Town", iso_country: "ZA", country_name: "South Africa", airport_type: "large_airport", latitude_deg: -33.964802, longitude_deg: 18.601700 },
-  { id: 2434, ident: "EGLL", icao_code: "EGLL", iata_code: "LHR", name: "London Heathrow Airport", municipality: "London", iso_country: "GB", country_name: "United Kingdom", airport_type: "large_airport", latitude_deg: 51.470600, longitude_deg: -0.461941 },
-  { id: 3697, ident: "KJFK", icao_code: "KJFK", iata_code: "JFK", name: "John F Kennedy International Airport", municipality: "New York", iso_country: "US", country_name: "United States", airport_type: "large_airport", latitude_deg: 40.639801, longitude_deg: -73.778900 },
-  { id: 2188, ident: "OMDB", icao_code: "OMDB", iata_code: "DXB", name: "Dubai International Airport", municipality: "Dubai", iso_country: "AE", country_name: "United Arab Emirates", airport_type: "large_airport", latitude_deg: 25.252800, longitude_deg: 55.364399 },
-  { id: 1382, ident: "LFPG", icao_code: "LFPG", iata_code: "CDG", name: "Charles de Gaulle International Airport", municipality: "Paris", iso_country: "FR", country_name: "France", airport_type: "large_airport", latitude_deg: 49.012798, longitude_deg: 2.550000 },
-  { id: 2513, ident: "EHAM", icao_code: "EHAM", iata_code: "AMS", name: "Amsterdam Airport Schiphol", municipality: "Amsterdam", iso_country: "NL", country_name: "Netherlands", airport_type: "large_airport", latitude_deg: 52.308601, longitude_deg: 4.763890 },
-  { id: 3098, ident: "RJTT", icao_code: "RJTT", iata_code: "HND", name: "Tokyo Haneda International Airport", municipality: "Tokyo", iso_country: "JP", country_name: "Japan", airport_type: "large_airport", latitude_deg: 35.552299, longitude_deg: 139.779999 },
-  { id: 3361, ident: "VIDP", icao_code: "VIDP", iata_code: "DEL", name: "Indira Gandhi International Airport", municipality: "New Delhi", iso_country: "IN", country_name: "India", airport_type: "large_airport", latitude_deg: 28.566500, longitude_deg: 77.103104 },
-  { id: 2593, ident: "YSSY", icao_code: "YSSY", iata_code: "SYD", name: "Sydney Kingsford Smith International Airport", municipality: "Sydney", iso_country: "AU", country_name: "Australia", airport_type: "large_airport", latitude_deg: -33.946098, longitude_deg: 151.177002 },
-  { id: 2560, ident: "SBGR", icao_code: "SBGR", iata_code: "GRU", name: "Guarulhos Governador André Franco Montoro International Airport", municipality: "São Paulo", iso_country: "BR", country_name: "Brazil", airport_type: "large_airport", latitude_deg: -23.435556, longitude_deg: -46.473056 },
-  { id: 1091, ident: "CYYZ", icao_code: "CYYZ", iata_code: "YYZ", name: "Toronto Lester B. Pearson International Airport", municipality: "Toronto", iso_country: "CA", country_name: "Canada", airport_type: "large_airport", latitude_deg: 43.677200, longitude_deg: -79.630600 },
+  {
+    id: 2434,
+    ident: "HKJK",
+    icao_code: "HKJK",
+    iata_code: "NBO",
+    name: "Jomo Kenyatta International Airport",
+    municipality: "Nairobi",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "large_airport",
+    latitude_deg: -1.319167,
+    longitude_deg: 36.927502,
+  },
+  {
+    id: 2440,
+    ident: "HKNW",
+    icao_code: "HKNW",
+    iata_code: "WIL",
+    name: "Nairobi Wilson Airport",
+    municipality: "Nairobi",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "medium_airport",
+    latitude_deg: -1.32172,
+    longitude_deg: 36.8148,
+  },
+  {
+    id: 2447,
+    ident: "HKRE",
+    icao_code: "HKRE",
+    iata_code: "",
+    name: "Moi Air Base",
+    municipality: "Nairobi",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "medium_airport",
+    latitude_deg: -1.32389,
+    longitude_deg: 36.862202,
+  },
+  {
+    id: 2437,
+    ident: "HKMO",
+    icao_code: "HKMO",
+    iata_code: "MBA",
+    name: "Moi International Airport",
+    municipality: "Mombasa",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "large_airport",
+    latitude_deg: -4.03483,
+    longitude_deg: 39.5942,
+  },
+  {
+    id: 2428,
+    ident: "HKEL",
+    icao_code: "HKEL",
+    iata_code: "EDL",
+    name: "Eldoret International Airport",
+    municipality: "Eldoret",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "medium_airport",
+    latitude_deg: 0.404458,
+    longitude_deg: 35.238899,
+  },
+  {
+    id: 2435,
+    ident: "HKKI",
+    icao_code: "HKKI",
+    iata_code: "KIS",
+    name: "Kisumu Airport",
+    municipality: "Kisumu",
+    iso_country: "KE",
+    country_name: "Kenya",
+    airport_type: "medium_airport",
+    latitude_deg: -0.086139,
+    longitude_deg: 34.728901,
+  },
+  {
+    id: 2611,
+    ident: "HTDA",
+    icao_code: "HTDA",
+    iata_code: "DAR",
+    name: "Julius Nyerere International Airport",
+    municipality: "Dar es Salaam",
+    iso_country: "TZ",
+    country_name: "Tanzania",
+    airport_type: "large_airport",
+    latitude_deg: -6.87811,
+    longitude_deg: 39.202599,
+  },
+  {
+    id: 2654,
+    ident: "HUEN",
+    icao_code: "HUEN",
+    iata_code: "EBB",
+    name: "Entebbe International Airport",
+    municipality: "Entebbe",
+    iso_country: "UG",
+    country_name: "Uganda",
+    airport_type: "large_airport",
+    latitude_deg: 0.042386,
+    longitude_deg: 32.443501,
+  },
+  {
+    id: 2322,
+    ident: "HAAB",
+    icao_code: "HAAB",
+    iata_code: "ADD",
+    name: "Addis Ababa Bole International Airport",
+    municipality: "Addis Ababa",
+    iso_country: "ET",
+    country_name: "Ethiopia",
+    airport_type: "large_airport",
+    latitude_deg: 8.97789,
+    longitude_deg: 38.799301,
+  },
+  {
+    id: 2177,
+    ident: "FACT",
+    icao_code: "FACT",
+    iata_code: "CPT",
+    name: "Cape Town International Airport",
+    municipality: "Cape Town",
+    iso_country: "ZA",
+    country_name: "South Africa",
+    airport_type: "large_airport",
+    latitude_deg: -33.964802,
+    longitude_deg: 18.6017,
+  },
+  {
+    id: 2434,
+    ident: "EGLL",
+    icao_code: "EGLL",
+    iata_code: "LHR",
+    name: "London Heathrow Airport",
+    municipality: "London",
+    iso_country: "GB",
+    country_name: "United Kingdom",
+    airport_type: "large_airport",
+    latitude_deg: 51.4706,
+    longitude_deg: -0.461941,
+  },
+  {
+    id: 3697,
+    ident: "KJFK",
+    icao_code: "KJFK",
+    iata_code: "JFK",
+    name: "John F Kennedy International Airport",
+    municipality: "New York",
+    iso_country: "US",
+    country_name: "United States",
+    airport_type: "large_airport",
+    latitude_deg: 40.639801,
+    longitude_deg: -73.7789,
+  },
+  {
+    id: 2188,
+    ident: "OMDB",
+    icao_code: "OMDB",
+    iata_code: "DXB",
+    name: "Dubai International Airport",
+    municipality: "Dubai",
+    iso_country: "AE",
+    country_name: "United Arab Emirates",
+    airport_type: "large_airport",
+    latitude_deg: 25.2528,
+    longitude_deg: 55.364399,
+  },
+  {
+    id: 1382,
+    ident: "LFPG",
+    icao_code: "LFPG",
+    iata_code: "CDG",
+    name: "Charles de Gaulle International Airport",
+    municipality: "Paris",
+    iso_country: "FR",
+    country_name: "France",
+    airport_type: "large_airport",
+    latitude_deg: 49.012798,
+    longitude_deg: 2.55,
+  },
+  {
+    id: 2513,
+    ident: "EHAM",
+    icao_code: "EHAM",
+    iata_code: "AMS",
+    name: "Amsterdam Airport Schiphol",
+    municipality: "Amsterdam",
+    iso_country: "NL",
+    country_name: "Netherlands",
+    airport_type: "large_airport",
+    latitude_deg: 52.308601,
+    longitude_deg: 4.76389,
+  },
+  {
+    id: 3098,
+    ident: "RJTT",
+    icao_code: "RJTT",
+    iata_code: "HND",
+    name: "Tokyo Haneda International Airport",
+    municipality: "Tokyo",
+    iso_country: "JP",
+    country_name: "Japan",
+    airport_type: "large_airport",
+    latitude_deg: 35.552299,
+    longitude_deg: 139.779999,
+  },
+  {
+    id: 3361,
+    ident: "VIDP",
+    icao_code: "VIDP",
+    iata_code: "DEL",
+    name: "Indira Gandhi International Airport",
+    municipality: "New Delhi",
+    iso_country: "IN",
+    country_name: "India",
+    airport_type: "large_airport",
+    latitude_deg: 28.5665,
+    longitude_deg: 77.103104,
+  },
+  {
+    id: 2593,
+    ident: "YSSY",
+    icao_code: "YSSY",
+    iata_code: "SYD",
+    name: "Sydney Kingsford Smith International Airport",
+    municipality: "Sydney",
+    iso_country: "AU",
+    country_name: "Australia",
+    airport_type: "large_airport",
+    latitude_deg: -33.946098,
+    longitude_deg: 151.177002,
+  },
+  {
+    id: 2560,
+    ident: "SBGR",
+    icao_code: "SBGR",
+    iata_code: "GRU",
+    name: "Guarulhos Governador André Franco Montoro International Airport",
+    municipality: "São Paulo",
+    iso_country: "BR",
+    country_name: "Brazil",
+    airport_type: "large_airport",
+    latitude_deg: -23.435556,
+    longitude_deg: -46.473056,
+  },
+  {
+    id: 1091,
+    ident: "CYYZ",
+    icao_code: "CYYZ",
+    iata_code: "YYZ",
+    name: "Toronto Lester B. Pearson International Airport",
+    municipality: "Toronto",
+    iso_country: "CA",
+    country_name: "Canada",
+    airport_type: "large_airport",
+    latitude_deg: 43.6772,
+    longitude_deg: -79.6306,
+  },
 ];
 
 const TYPE_LABEL = {
@@ -70,7 +309,7 @@ export default function Screen() {
 
   const results = React.useMemo(
     () => (submitted ? AIRPORTS.filter((a) => matches(a, submitted)) : []),
-    [submitted]
+    [submitted],
   );
 
   const runSearch = (e) => {
@@ -100,22 +339,46 @@ export default function Screen() {
         }
       `}</style>
 
-      <div data-wf="b-0-0" className="flex flex-wrap items-end justify-between gap-3 pb-4" style={{ borderBottom: rule }}>
+      <div
+        data-wf="b-0-0"
+        className="flex flex-wrap items-end justify-between gap-3 pb-4"
+        style={{ borderBottom: rule }}
+      >
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: brand.neutralColor }}>{PRODUCT}</p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight" style={{ fontFamily: brand.fontHeading }}>{SCREEN}</h1>
+          <p
+            className="text-[11px] font-bold uppercase tracking-[0.18em]"
+            style={{ color: brand.neutralColor }}
+          >
+            {PRODUCT}
+          </p>
+          <h1
+            className="mt-1 text-3xl font-bold tracking-tight"
+            style={{ fontFamily: brand.fontHeading }}
+          >
+            {SCREEN}
+          </h1>
         </div>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] tabular-nums" style={{ color: brand.neutralColor }}>
+        <p
+          className="text-[11px] font-semibold uppercase tracking-[0.12em] tabular-nums"
+          style={{ color: brand.neutralColor }}
+        >
           {DATASET_NOTE}
         </p>
       </div>
 
       <form onSubmit={runSearch} className="grid grid-cols-1 gap-4 py-4 md:grid-cols-12">
         <div className="md:col-span-9">
-          <Label htmlFor="airport-query" className="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: brand.neutralColor }}>
+          <Label
+            htmlFor="airport-query"
+            className="mb-1 block text-[11px] font-bold uppercase tracking-[0.14em]"
+            style={{ color: brand.neutralColor }}
+          >
             Search the worldwide directory
           </Label>
-          <div className="flex items-center gap-2 bg-white px-3" style={{ border: rule, borderRadius: brand.radius, height: 44 }}>
+          <div
+            className="flex items-center gap-2 bg-white px-3"
+            style={{ border: rule, borderRadius: brand.radius, height: 44 }}
+          >
             <Icons.Search className="h-4 w-4 shrink-0" aria-hidden="true" />
             <input
               data-wf="b-1-0"
@@ -134,13 +397,24 @@ export default function Screen() {
             />
           </div>
           {status === "error" ? (
-            <p id="airport-query-error" role="alert" className="mt-2 flex items-center gap-2 text-xs font-bold" style={{ color: brand.accentColor }}>
+            <p
+              id="airport-query-error"
+              role="alert"
+              className="mt-2 flex items-center gap-2 text-xs font-bold"
+              style={{ color: brand.accentColor }}
+            >
               <Icons.AlertCircle className="h-4 w-4" aria-hidden="true" />
-              The search box is empty. Type an ICAO or IATA code, an airport name, a city or a country.
+              The search box is empty. Type an ICAO or IATA code, an airport name, a city or a
+              country.
             </p>
           ) : (
-            <p id="airport-query-hint" className="mt-2 text-xs" style={{ color: brand.neutralColor }}>
-              Four letters match ICAO (HKJK), three letters match IATA (NBO). Everything else matches name, city and country.
+            <p
+              id="airport-query-hint"
+              className="mt-2 text-xs"
+              style={{ color: brand.neutralColor }}
+            >
+              Four letters match ICAO (HKJK), three letters match IATA (NBO). Everything else
+              matches name, city and country.
             </p>
           )}
         </div>
@@ -159,29 +433,57 @@ export default function Screen() {
 
       <p data-wf="b-2-0" className="pb-4 text-sm tabular-nums" aria-live="polite">
         {status === "searching" ? (
-          <span style={{ color: brand.neutralColor }}>Matching “{submitted}” against {AIRPORTS.length.toLocaleString()} bundled airports…</span>
+          <span style={{ color: brand.neutralColor }}>
+            Matching “{submitted}” against {AIRPORTS.length.toLocaleString()} bundled airports…
+          </span>
         ) : showEmpty ? (
           <span style={{ color: brand.neutralColor }}>0 airports match “{submitted}”.</span>
         ) : (
           <span>
-            <strong className="font-bold">{results.length}</strong> airport{results.length === 1 ? "" : "s"} match “{submitted}”. Select a result to open its details or send it to the route planner.
+            <strong className="font-bold">{results.length}</strong> airport
+            {results.length === 1 ? "" : "s"} match “{submitted}”. Select a result to open its
+            details or send it to the route planner.
           </span>
         )}
       </p>
 
-      <h2 data-wf="b-3-0" className="pb-2 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: brand.neutralColor }}>
+      <h2
+        data-wf="b-3-0"
+        className="pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
+        style={{ color: brand.neutralColor }}
+      >
         Matching airports
       </h2>
-      <table className="w-full text-[13px]" style={{ borderTop: rule, fontVariantNumeric: "tabular-nums" }}>
-        <caption className="sr-only">Matching airports from the bundled OurAirports dataset. Select a row to open its details.</caption>
+      <table
+        className="w-full text-[13px]"
+        style={{ borderTop: rule, fontVariantNumeric: "tabular-nums" }}
+      >
+        <caption className="sr-only">
+          Matching airports from the bundled OurAirports dataset. Select a row to open its details.
+        </caption>
         <thead>
-          <tr className="text-left text-[11px] uppercase tracking-[0.14em]" style={{ borderBottom: rule, color: brand.neutralColor }}>
-            <th data-wf="i-3-0-0" scope="col" className="py-2 font-bold">Name</th>
-            <th data-wf="i-3-0-1" scope="col" className="py-2 font-bold">ICAO</th>
-            <th data-wf="i-3-0-2" scope="col" className="py-2 font-bold">IATA</th>
-            <th data-wf="i-3-0-3" scope="col" className="py-2 font-bold">City</th>
-            <th data-wf="i-3-0-4" scope="col" className="py-2 font-bold">Country</th>
-            <th data-wf="i-3-0-5" scope="col" className="py-2 font-bold">Type</th>
+          <tr
+            className="text-left text-[11px] uppercase tracking-[0.14em]"
+            style={{ borderBottom: rule, color: brand.neutralColor }}
+          >
+            <th data-wf="i-3-0-0" scope="col" className="py-2 font-bold">
+              Name
+            </th>
+            <th data-wf="i-3-0-1" scope="col" className="py-2 font-bold">
+              ICAO
+            </th>
+            <th data-wf="i-3-0-2" scope="col" className="py-2 font-bold">
+              IATA
+            </th>
+            <th data-wf="i-3-0-3" scope="col" className="py-2 font-bold">
+              City
+            </th>
+            <th data-wf="i-3-0-4" scope="col" className="py-2 font-bold">
+              Country
+            </th>
+            <th data-wf="i-3-0-5" scope="col" className="py-2 font-bold">
+              Type
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -189,40 +491,53 @@ export default function Screen() {
             ? [0, 1, 2, 3].map((i) => (
                 <tr key={`sk-${i}`} style={{ borderBottom: hair }}>
                   <td colSpan={6} className="py-3">
-                    <span className="obs-skeleton block h-3 w-full" style={{ backgroundColor: brand.primaryColor }} />
+                    <span
+                      className="obs-skeleton block h-3 w-full"
+                      style={{ backgroundColor: brand.primaryColor }}
+                    />
                   </td>
                 </tr>
               ))
             : showResults
-            ? results.map((a) => (
-                <tr
-                  key={a.ident}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Open details for ${a.name}, ${a.icao_code}`}
-                  className="obs-row obs-focus cursor-pointer hover:bg-black/[0.03]"
-                  onClick={() => navigate("airport-detail")}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      navigate("airport-detail");
-                    }
-                  }}
-                  style={{ borderBottom: hair }}
-                >
-                  <td className="py-2 font-semibold">{a.name}</td>
-                  <td className="py-2 font-semibold tracking-wider tabular-nums">{a.icao_code}</td>
-                  <td className="py-2 tracking-wider tabular-nums" style={{ color: a.iata_code ? undefined : brand.neutralColor }}>
-                    {a.iata_code || "—"}
-                  </td>
-                  <td className="py-2">{a.municipality}</td>
-                  <td className="py-2">
-                    {a.country_name} <span className="tabular-nums" style={{ color: brand.neutralColor }}>{a.iso_country}</span>
-                  </td>
-                  <td className="py-2 text-[11px] font-bold uppercase tracking-wider">{TYPE_LABEL[a.airport_type] || a.airport_type}</td>
-                </tr>
-              ))
-            : null}
+              ? results.map((a) => (
+                  <tr
+                    key={a.ident}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Open details for ${a.name}, ${a.icao_code}`}
+                    className="obs-row obs-focus cursor-pointer hover:bg-black/[0.03]"
+                    onClick={() => navigate("airport-detail")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigate("airport-detail");
+                      }
+                    }}
+                    style={{ borderBottom: hair }}
+                  >
+                    <td className="py-2 font-semibold">{a.name}</td>
+                    <td className="py-2 font-semibold tracking-wider tabular-nums">
+                      {a.icao_code}
+                    </td>
+                    <td
+                      className="py-2 tracking-wider tabular-nums"
+                      style={{ color: a.iata_code ? undefined : brand.neutralColor }}
+                    >
+                      {a.iata_code || "—"}
+                    </td>
+                    <td className="py-2">{a.municipality}</td>
+                    <td className="py-2">
+                      {a.country_name}{" "}
+                      <span className="tabular-nums" style={{ color: brand.neutralColor }}>
+                        {a.iso_country}
+                      </span>
+                    </td>
+                    <td className="py-2 text-[11px] font-bold uppercase tracking-wider">
+                      {TYPE_LABEL[a.airport_type] || a.airport_type}
+                    </td>
+                  </tr>
+                ))
+              : null}
         </tbody>
       </table>
 
@@ -239,14 +554,24 @@ export default function Screen() {
             <Icons.ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
           <p className="text-xs tabular-nums" style={{ color: brand.neutralColor }}>
-            Opens the route planner, where you set the origin and destination and plot the great-circle path.
+            Opens the route planner, where you set the origin and destination and plot the
+            great-circle path.
           </p>
         </div>
       ) : null}
 
       {showEmpty ? (
-        <div data-wf="b-5-0" className="mt-6 px-6 py-10 text-center" style={{ border: rule, borderRadius: brand.radius }}>
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: brand.accentColor }}>No match in the dataset</p>
+        <div
+          data-wf="b-5-0"
+          className="mt-6 px-6 py-10 text-center"
+          style={{ border: rule, borderRadius: brand.radius }}
+        >
+          <p
+            className="text-[11px] font-bold uppercase tracking-[0.18em]"
+            style={{ color: brand.accentColor }}
+          >
+            No match in the dataset
+          </p>
           <p className="mx-auto mt-2 max-w-md text-sm font-semibold">
             No airports match “{submitted}”. Try another code, airport name, city or country.
           </p>

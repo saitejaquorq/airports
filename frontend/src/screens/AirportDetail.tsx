@@ -1,5 +1,5 @@
 // @ts-nocheck -- generated from the approved design under its JS runtime contract; not hand-written TypeScript.
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React from "react";
 
 import * as UI from "@/lib/ui";
@@ -7,9 +7,8 @@ import { Icons } from "@/lib/icons";
 import { brand } from "@/lib/brand";
 import { useNavigate } from "@/lib/navigate";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Button, Badge, Table, THead, TBody, TR, TH, TD } = UI;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Check, ArrowLeft } = Icons;
 
 const AIRPORT = {
@@ -30,12 +29,34 @@ const AIRPORT = {
 const RECORD_ROWS = [
   { wf: "i-2-0-0", label: "ICAO code", value: AIRPORT.icao_code, code: true },
   { wf: "i-2-0-1", label: "IATA code", value: AIRPORT.iata_code, code: true },
-  { wf: "i-2-0-2", label: "Ident", value: AIRPORT.ident, code: true, note: "Primary key in the dataset" },
+  {
+    wf: "i-2-0-2",
+    label: "Ident",
+    value: AIRPORT.ident,
+    code: true,
+    note: "Primary key in the dataset",
+  },
   { wf: "i-2-0-3", label: "City", value: AIRPORT.municipality },
-  { wf: "i-2-0-4", label: "Country", value: AIRPORT.country_name + " (" + AIRPORT.iso_country + ")" },
+  {
+    wf: "i-2-0-4",
+    label: "Country",
+    value: AIRPORT.country_name + " (" + AIRPORT.iso_country + ")",
+  },
   { wf: "i-2-0-5", label: "Type", value: AIRPORT.airport_type, token: true },
-  { wf: "i-2-0-6", label: "Latitude", value: AIRPORT.latitude_deg.toFixed(6), code: true, note: "WGS 84 decimal degrees" },
-  { wf: "i-2-0-7", label: "Longitude", value: AIRPORT.longitude_deg.toFixed(6), code: true, note: "WGS 84 decimal degrees" },
+  {
+    wf: "i-2-0-6",
+    label: "Latitude",
+    value: AIRPORT.latitude_deg.toFixed(6),
+    code: true,
+    note: "WGS 84 decimal degrees",
+  },
+  {
+    wf: "i-2-0-7",
+    label: "Longitude",
+    value: AIRPORT.longitude_deg.toFixed(6),
+    code: true,
+    note: "WGS 84 decimal degrees",
+  },
   { wf: "i-2-0-8", label: "Imported", value: AIRPORT.imported_at, note: "Snapshot 2026.11" },
 ];
 
@@ -117,8 +138,16 @@ export default function Screen() {
           style={{
             border: "2px solid " + ink,
             borderRadius: brand.radius,
-            backgroundColor: primary ? (busy && !isPending ? "rgba(17,17,17,0.45)" : ink) : "transparent",
-            color: primary ? brand.backgroundColor : busy && !isPending ? "rgba(17,17,17,0.45)" : ink,
+            backgroundColor: primary
+              ? busy && !isPending
+                ? "rgba(17,17,17,0.45)"
+                : ink
+              : "transparent",
+            color: primary
+              ? brand.backgroundColor
+              : busy && !isPending
+                ? "rgba(17,17,17,0.45)"
+                : ink,
             borderColor: primary ? ink : busy && !isPending ? "rgba(17,17,17,0.45)" : ink,
             opacity: busy && !isPending ? 0.65 : 1,
             fontFamily: brand.fontBody,
@@ -127,7 +156,10 @@ export default function Screen() {
           {isDone ? (
             <Check className="h-4 w-4" aria-hidden="true" />
           ) : isPending ? (
-            <span className="ap-spin h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent" aria-hidden="true" />
+            <span
+              className="ap-spin h-3.5 w-3.5 rounded-full border-2 border-current border-t-transparent"
+              aria-hidden="true"
+            />
           ) : null}
           <span>Set as route {role}</span>
         </Button>
@@ -135,7 +167,8 @@ export default function Screen() {
           className="mt-2 text-[12px] leading-[1.5] min-h-[18px]"
           style={{ color: line ? (isDone ? accent : ink) : muted }}
         >
-          {line || "Opens the route planner with " + AIRPORT.icao_code + " pre-filled as " + role + "."}
+          {line ||
+            "Opens the route planner with " + AIRPORT.icao_code + " pre-filled as " + role + "."}
         </p>
       </div>
     );
@@ -189,10 +222,18 @@ export default function Screen() {
             >
               {AIRPORT.name}
             </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px]" style={{ color: muted }}>
+            <div
+              className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px]"
+              style={{ color: muted }}
+            >
               <span
                 className="inline-flex items-center px-2 py-[3px] text-[12px] font-bold tracking-[0.18em]"
-                style={{ border: "2px solid " + ink, borderRadius: brand.radius, color: ink, fontVariantNumeric: "tabular-nums" }}
+                style={{
+                  border: "2px solid " + ink,
+                  borderRadius: brand.radius,
+                  color: ink,
+                  fontVariantNumeric: "tabular-nums",
+                }}
               >
                 {AIRPORT.icao_code}
               </span>
@@ -202,7 +243,9 @@ export default function Screen() {
               >
                 {AIRPORT.iata_code}
               </span>
-              <span aria-hidden="true" style={{ color: hair }}>|</span>
+              <span aria-hidden="true" style={{ color: hair }}>
+                |
+              </span>
               <span>
                 {AIRPORT.municipality}, {AIRPORT.country_name}
               </span>
@@ -220,13 +263,19 @@ export default function Screen() {
               <h2 className={labelCls} style={{ color: ink, fontFamily: brand.fontHeading }}>
                 Airport record
               </h2>
-              <p className="text-[12px]" style={{ color: muted, fontVariantNumeric: "tabular-nums" }}>
+              <p
+                className="text-[12px]"
+                style={{ color: muted, fontVariantNumeric: "tabular-nums" }}
+              >
                 Source: OurAirports &middot; read-only
               </p>
             </div>
 
             <div className="mt-3" style={plateStyle}>
-              <Table className="w-full text-left" style={{ fontVariantNumeric: "tabular-nums", borderCollapse: "collapse" }}>
+              <Table
+                className="w-full text-left"
+                style={{ fontVariantNumeric: "tabular-nums", borderCollapse: "collapse" }}
+              >
                 <THead>
                   <TR style={{ borderBottom: "2px solid " + ink }}>
                     <TH
@@ -247,7 +296,8 @@ export default function Screen() {
                 </THead>
                 <TBody>
                   {RECORD_ROWS.map((row, i) => {
-                    const missing = row.value === null || row.value === undefined || row.value === "";
+                    const missing =
+                      row.value === null || row.value === undefined || row.value === "";
                     return (
                       <TR
                         key={row.wf}
@@ -281,7 +331,8 @@ export default function Screen() {
                           ) : (
                             <span
                               className={
-                                "text-[14px] " + (row.code ? "font-bold tracking-[0.08em]" : "font-medium")
+                                "text-[14px] " +
+                                (row.code ? "font-bold tracking-[0.08em]" : "font-medium")
                               }
                               style={{ color: ink }}
                             >
@@ -321,8 +372,12 @@ export default function Screen() {
                 <span className="text-[12px] font-bold tracking-[0.18em]" style={{ color: ink }}>
                   {AIRPORT.ident}
                 </span>
-                <span className="text-[12px]" style={{ color: ink, fontVariantNumeric: "tabular-nums" }}>
-                  {toDegMin(AIRPORT.latitude_deg, "N", "S", 2)} {toDegMin(AIRPORT.longitude_deg, "E", "W", 3)}
+                <span
+                  className="text-[12px]"
+                  style={{ color: ink, fontVariantNumeric: "tabular-nums" }}
+                >
+                  {toDegMin(AIRPORT.latitude_deg, "N", "S", 2)}{" "}
+                  {toDegMin(AIRPORT.longitude_deg, "E", "W", 3)}
                 </span>
               </div>
 
@@ -342,10 +397,26 @@ export default function Screen() {
               >
                 <rect x="0" y="0" width={W} height={H} fill={brand.backgroundColor} />
                 {GRID_FRACTIONS.map((f) => (
-                  <line key={"v" + f} x1={f * W} y1="0" x2={f * W} y2={H} stroke={hair} strokeWidth="1" />
+                  <line
+                    key={"v" + f}
+                    x1={f * W}
+                    y1="0"
+                    x2={f * W}
+                    y2={H}
+                    stroke={hair}
+                    strokeWidth="1"
+                  />
                 ))}
                 {GRID_FRACTIONS.map((f) => (
-                  <line key={"h" + f} x1="0" y1={f * H} x2={W} y2={f * H} stroke={hair} strokeWidth="1" />
+                  <line
+                    key={"h" + f}
+                    x1="0"
+                    y1={f * H}
+                    x2={W}
+                    y2={f * H}
+                    stroke={hair}
+                    strokeWidth="1"
+                  />
                 ))}
                 {GRID_FRACTIONS.map((f) => (
                   <text
@@ -375,9 +446,35 @@ export default function Screen() {
                 ))}
 
                 {/* crosshair */}
-                <line x1="0" y1={cy} x2={W} y2={cy} stroke={accent} strokeWidth="1" strokeDasharray="5 4" opacity="0.55" />
-                <line x1={cx} y1="0" x2={cx} y2={H} stroke={accent} strokeWidth="1" strokeDasharray="5 4" opacity="0.55" />
-                <circle className="ap-ping" cx={cx} cy={cy} r="7" fill="none" stroke={accent} strokeWidth="2" />
+                <line
+                  x1="0"
+                  y1={cy}
+                  x2={W}
+                  y2={cy}
+                  stroke={accent}
+                  strokeWidth="1"
+                  strokeDasharray="5 4"
+                  opacity="0.55"
+                />
+                <line
+                  x1={cx}
+                  y1="0"
+                  x2={cx}
+                  y2={H}
+                  stroke={accent}
+                  strokeWidth="1"
+                  strokeDasharray="5 4"
+                  opacity="0.55"
+                />
+                <circle
+                  className="ap-ping"
+                  cx={cx}
+                  cy={cy}
+                  r="7"
+                  fill="none"
+                  stroke={accent}
+                  strokeWidth="2"
+                />
                 <circle cx={cx} cy={cy} r="7" fill="none" stroke={accent} strokeWidth="2" />
                 <circle cx={cx} cy={cy} r="2.5" fill={accent} />
                 <text
@@ -397,8 +494,18 @@ export default function Screen() {
 
                 {/* corner ticks */}
                 <path d={"M0 18 L0 0 L18 0"} fill="none" stroke={ink} strokeWidth="2" />
-                <path d={"M" + (W - 18) + " 0 L" + W + " 0 L" + W + " 18"} fill="none" stroke={ink} strokeWidth="2" />
-                <path d={"M0 " + (H - 18) + " L0 " + H + " L18 " + H} fill="none" stroke={ink} strokeWidth="2" />
+                <path
+                  d={"M" + (W - 18) + " 0 L" + W + " 0 L" + W + " 18"}
+                  fill="none"
+                  stroke={ink}
+                  strokeWidth="2"
+                />
+                <path
+                  d={"M0 " + (H - 18) + " L0 " + H + " L18 " + H}
+                  fill="none"
+                  stroke={ink}
+                  strokeWidth="2"
+                />
                 <path
                   d={"M" + (W - 18) + " " + H + " L" + W + " " + H + " L" + W + " " + (H - 18)}
                   fill="none"
@@ -411,7 +518,9 @@ export default function Screen() {
                 className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 text-[11px] uppercase tracking-[0.14em]"
                 style={{ borderTop: "2px solid " + ink, color: muted }}
               >
-                <span style={{ fontVariantNumeric: "tabular-nums" }}>Span &plusmn;10&deg; &middot; equirectangular</span>
+                <span style={{ fontVariantNumeric: "tabular-nums" }}>
+                  Span &plusmn;10&deg; &middot; equirectangular
+                </span>
                 <span>Positions: OurAirports</span>
               </figcaption>
             </figure>
@@ -428,8 +537,8 @@ export default function Screen() {
             className="col-span-12 text-[13px] leading-[1.6] max-w-[72ch] pl-4"
             style={{ color: muted, borderLeft: "2px solid " + accent }}
           >
-            Read-only entry from the bundled OurAirports dataset; no edit, add or delete controls. Airports with no IATA
-            code show &ldquo;Not available&rdquo;.
+            Read-only entry from the bundled OurAirports dataset; no edit, add or delete controls.
+            Airports with no IATA code show &ldquo;Not available&rdquo;.
           </p>
         </div>
 
